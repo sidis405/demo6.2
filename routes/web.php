@@ -1,19 +1,7 @@
 <?php
 
-Route::get('/', function () {
-    //$name = 'Tony Stark';
+Route::get('/', 'PostsController@index');
 
-    $tasks = [
-        'Install Laravel',
-        'Read Docs',
-        'Profit'
-    ];
+Auth::routes();
 
-    // return view('welcome', ['tasks' => $tasks]);
-
-    // return view('welcome')->with(['tasks' => $tasks]);
-
-    // return view('welcome')->withTasks($tasks);
-
-    return view('welcome', compact('tasks'));
-});
+Route::get('/home', 'HomeController@index')->name('home');
