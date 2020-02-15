@@ -33,11 +33,15 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        @auth
+                            <li class="nav-item">
+                                <a href="{{ route('posts.create') }}" class="btn btn-primary btn-sm">+ New Post</a>
+                            </li>
+                        @endauth
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -73,7 +77,18 @@
         </nav>
 
         <main class="py-4">
-            @yield('content')
+            <div class="container">
+                @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                @yield('content')
+            </div>
         </main>
     </div>
 </body>

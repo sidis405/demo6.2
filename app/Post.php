@@ -2,10 +2,18 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
+    protected $guarded = ['id'];
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -24,5 +32,18 @@ class Post extends Model
     public function comments()
     {
         return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    // Getters / Accessors
+    // public function getTitleAttribute($title)
+    // {
+    //     return strtoupper($title);
+    // }
+
+    // Setters / Mutators
+    public function setTitleAttribute($title)
+    {
+        $this->attributes['title'] = $title;
+        $this->attributes['slug'] = Str::slug($title);
     }
 }
