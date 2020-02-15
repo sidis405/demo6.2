@@ -22,7 +22,15 @@ class DatabaseSeeder extends Seeder
         $tags = factory(Tag::class, 40)->create();
 
         // 10 utenti
-        $users = factory(User::class, 10)->create();
+        User::create([
+            'name' => 'Sid',
+            'email' => 'forge405@gmail.com',
+            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        ]);
+
+        factory(User::class, 9)->create();
+
+        $users = User::all();
 
         //  15 posts per utente
         foreach ($users as $user) {

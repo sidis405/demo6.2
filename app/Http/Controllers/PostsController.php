@@ -12,6 +12,8 @@ class PostsController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except('index', 'show');
+        $this->middleware('can:update,post')->only('edit', 'update');
+        $this->middleware('can:delete,post')->only('destroy');
     }
 
     public function index()
@@ -25,8 +27,9 @@ class PostsController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
+        $post = new Post;
 
-        return view('posts.create', compact('categories', 'tags'));
+        return view('posts.create', compact('categories', 'tags', 'post'));
     }
 
     public function store(PostRequest $request)
@@ -47,16 +50,27 @@ class PostsController extends Controller
 
     public function edit(Post $post)
     {
-        //
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return view('posts.edit', compact('post', 'categories', 'tags'));
     }
 
     public function update(PostRequest $request, Post $post)
     {
-        //
+        $post->update($request->validated());
+
+        $post->tags()->sync($request->tags);
+
+        return redirect()->route('posts.show', $post);
     }
 
     public function destroy(Post $post)
     {
-        //
+        $post->tags()->sync([]);
+
+        $post->delete();
+
+        return redirect()->route('posts.index');
     }
 }
