@@ -5,6 +5,13 @@ Route::resource('posts', 'PostsController')->except('index');
 
 Auth::routes();
 
+Route::get('post-updated-email', function () {
+    $post = App\Post::first();
+    $recipient = $post->user;
+
+    return new App\Mail\PostWasUpdatedEmail($recipient, $post);
+});
+
 
 // Route::get('posts/create', 'PostsController@create')->name('posts.create');
 // Route::get('posts/{post}', 'PostsController@show')->name('posts.show');
