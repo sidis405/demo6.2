@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
 use App\Post;
-use App\Category;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use App\Events\PostWasUpdated;
 use App\Http\Requests\PostRequest;
 
@@ -17,20 +17,32 @@ class PostsController extends Controller
         $this->middleware('can:delete,post')->only('destroy');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::with('user', 'category', 'tags')->latest()->paginate(10);
+        $posts = Post::with('user', 'category', 'tags');
 
-        return view('posts.index', compact('posts'));
+        if ($year = $request->year) {
+            $posts = $posts->whereYear('created_at', $year);
+        }
+
+        if ($monthName = $request->month) {
+            try {
+                $posts = $posts->whereMonth('created_at', Carbon::parse($monthName)->month);
+            } catch (\Exception $e) {
+                //
+            }
+        }
+
+        $posts = $posts->latest()->paginate(10);
+
+        return view('posts.index', compact('posts', 'sidebarCategories', 'sidebarTags'));
     }
 
     public function create()
     {
-        $categories = Category::all();
-        $tags = Tag::all();
         $post = new Post;
 
-        return view('posts.create', compact('categories', 'tags', 'post'));
+        return view('posts.create', compact('post'));
     }
 
     public function store(PostRequest $request)
@@ -51,10 +63,7 @@ class PostsController extends Controller
 
     public function edit(Post $post)
     {
-        $categories = Category::all();
-        $tags = Tag::all();
-
-        return view('posts.edit', compact('post', 'categories', 'tags'));
+        return view('posts.edit', compact('tags'));
     }
 
     public function update(PostRequest $request, Post $post)

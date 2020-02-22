@@ -1,4 +1,5 @@
 <div class="card">
+    <img src="/storage/{{ $post->cover }}" style="width: 100%">
     <div class="card-header">
         <h5><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h5>
         <small>

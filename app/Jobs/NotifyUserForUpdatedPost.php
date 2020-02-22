@@ -27,10 +27,6 @@ class NotifyUserForUpdatedPost implements ShouldQueue
 
     public function handle()
     {
-        echo("Dentro la classe Job - " . date('h:i:s') . "\n");
-        sleep(3); //simulazione
-        echo("Job Eseguito " . date('h:i:s') . "\n");
-
         Mail::to($this->user)->send(new PostWasUpdatedEmail($this->user, $this->post));
     }
 }

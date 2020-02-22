@@ -4,7 +4,7 @@
 
     <h4>Edit "{{ $post->title }}"</h4>
 
-    <form method="POST" action="{{ route('posts.update', $post) }}">
+    <form method="POST" action="{{ route('posts.update', $post) }}"  enctype="multipart/form-data">
 
         @csrf
         @method('PATCH')
