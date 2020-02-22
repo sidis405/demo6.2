@@ -37,6 +37,13 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+
+                        @foreach(config('app.locales') as $locale => $label)
+                            <li class="nav-item">
+                                <a href="/{{ $locale }}" class="nav-link @if(app()->isLocale($locale)) active @endif">{{ $label }}</a>
+                            </li>
+                        @endforeach
+
                         @auth
                             <li class="nav-item">
                                 <a href="{{ route('posts.create') }}" class="btn btn-primary btn-sm">+ New Post</a>

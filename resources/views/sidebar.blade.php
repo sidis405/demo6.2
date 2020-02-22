@@ -1,7 +1,10 @@
 <h4>Archive</h4>
 <ul>
     @foreach($archive as $record)
-        <li><a href="/?month={{ $record->month }}&year={{ $record->year }}">{{ $record->month }} {{ $record->year }} ({{ $record->published }})</a></li>
+        <li><a href="{{ route('posts.index', [
+        'month' => $record->month,
+        'year' => $record->year,
+        ]) }}">{{ $record->month }} {{ $record->year }} ({{ $record->published }})</a></li>
     @endforeach
 </ul>
 
