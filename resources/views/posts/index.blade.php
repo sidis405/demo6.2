@@ -5,7 +5,7 @@
     @if(request('month') !== null && request('year') !== null )
         <h4>Posts crated in {{ request('month') }} {{ request('year') }} ({{ $posts->total() }})</h4>
     @else
-        <h4>{{ __('blog.Latest Posts') }}</h4>
+        <h4>@lang('blog.Latest Posts')</h4>
     @endif
 
     @foreach($posts as $post)
